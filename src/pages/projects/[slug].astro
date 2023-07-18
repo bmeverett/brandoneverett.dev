@@ -1,0 +1,43 @@
+---
+import { readOne, readAll } from '../../lib/markdoc/read'
+import { project } from '../../lib/markdoc/frontmatter.schema'
+import Renderer from '../../components/Renderer.astro'
+import BlogPostMeta from '../../components/BlogPostMeta.astro'
+import ContentLayout from '../../layouts/ContentLayout.astro'
+import { SITE_URL } from '../../config'
+
+export async function getStaticPaths() {
+  const projects = await readAll({
+    directory: 'projects',
+    frontmatterSchema: project,
+  })
+
+  const filteredPosts = projects.filter((p) => p.frontmatter.draft !== true)
+
+  return filteredPosts.map((post) => {
+    return { params: { slug: post.slug } }
+  })
+}
+
+const { slug } = Astro.params
+if (typeof slug !== 'string') {
+  throw Error(`slug should be string. Received: ${slug}`)
+}
+
+const { content, frontmatter } = await readOne({
+  directory: 'projects',
+  slug,
+  frontmatterSchema: project,
+})
+---
+
+<ContentLayout title={frontmatter.title} date={frontmatter.date}>
+  <BlogPostMeta
+    title={frontmatter.title}
+    description={frontmatter.description}
+    publishDate={frontmatter.date.toISOString()}
+    pagePath={`/blog/${slug}`}
+    slot="meta"
+  />
+  <Renderer content={content} slot="content" />
+</ContentLayout>

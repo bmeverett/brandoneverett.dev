@@ -1,0 +1,84 @@
+---
+import { readAll } from '../lib/markdoc/read'
+import { job } from '../lib/markdoc/frontmatter.schema'
+import PageMeta from '../components/PageMeta.astro'
+import { SITE_TITLE } from '../config'
+import PageLayout from '../layouts/PageLayout.astro'
+
+const jobs = await readAll({
+  directory: 'jobs',
+  frontmatterSchema: job,
+})
+
+const sortedProjects = jobs.sort(
+  (a, b) =>
+    new Date(b.frontmatter.startDate).valueOf() -
+    new Date(a.frontmatter.startDate).valueOf(),
+)
+---
+
+<PageLayout>
+  <PageMeta title={`Resume | ${SITE_TITLE}`} slot="meta" />
+  <section slot="main">
+    <ul>
+      {
+        sortedProjects.map((project) => {
+          const formattedDate = new Date(
+            project.frontmatter.startDate,
+          ).toLocaleDateString('en-us', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            timeZone: 'UTC',
+          })
+          const endDate = project.frontmatter.endDate
+            ? new Date(project.frontmatter.endDate).toLocaleDateString(
+                'en-us',
+                {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  timeZone: 'UTC',
+                },
+              )
+            : 'Present'
+          return (
+            <li class="pb-3 sm:pb-4">
+              <div class="flex items-center space-x-4">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    {project.frontmatter.company}
+                  </p>
+                  <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    {project.frontmatter.position}
+                  </p>
+                </div>
+                <div class="text-text-muted text-sm italic pt-1">
+                  <time datetime={project.frontmatter.startDate.toISOString()}>
+                    {formattedDate} - {endDate}
+                  </time>
+                </div>
+              </div>
+            </li>
+            //  <div class="flex-shrink-0">
+            //       <img
+            //         class="w-8 h-8 rounded-full"
+            //         src="/docs/images/people/profile-picture-1.jpg"
+            //         alt="Neil image"
+            //       />
+            //     </div>
+            // <li class="grid grid-cols-[1fr] md:grid-cols-[1fr_auto] mb-3 md:gap-2 items-start">
+            //   <div class="title">{project.frontmatter.company}</div>
+            //   <div class="text-text-muted text-sm italic pt-1">
+            //     <time datetime={project.frontmatter.startDate.toISOString()}>
+            //       {formattedDate} - {endDate}
+            //     </time>
+            //   </div>
+            //   <div>{project.frontmatter.tags?.join(',')}</div>
+            // </li>
+          )
+        })
+      }
+    </ul>
+  </section>
+</PageLayout>
