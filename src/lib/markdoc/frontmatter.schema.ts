@@ -48,18 +48,24 @@ export const project = baseSchema.extend({
 
 export const job = z.object({
   company: z.string(),
-  startDate: z.date({
-    required_error: 'Required frontmatter missing: startDate',
-    invalid_type_error:
-      'date must be written in yyyy-mm-dd format without quotes: For example, Jan 22, 2000 should be written as 2000-01-22.',
-  }),
-  endDate: z.optional(
+  startDate: z.array(
     z.date({
-      required_error: 'Required frontmatter missing: endDate',
+      required_error: 'Required frontmatter missing: startDate',
       invalid_type_error:
         'date must be written in yyyy-mm-dd format without quotes: For example, Jan 22, 2000 should be written as 2000-01-22.',
     }),
   ),
+  endDate: z.optional(
+    z.array(
+      z.nullable(
+        z.date({
+          required_error: 'Required frontmatter missing: endDate',
+          invalid_type_error:
+            'date must be written in yyyy-mm-dd format without quotes: For example, Jan 22, 2000 should be written as 2000-01-22.',
+        }),
+      ),
+    ),
+  ),
   tags: z.optional(z.array(z.string())),
-  position: z.string(),
+  position: z.array(z.string()),
 })

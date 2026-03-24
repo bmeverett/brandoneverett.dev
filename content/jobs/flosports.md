@@ -1,10 +1,13 @@
 ---
 company: 'FloSports'
 location: 'Remote'
-position: 'Software Engineer'
+position: 
+  - 'Software Engineer'
 tags: ['Mobile']
-startDate: 2021-05-21
-endDate: 2023-06-30
+startDate: 
+  - 2021-05-21
+endDate: 
+  - 2023-06-30
 ---
 
 - Co-led the migration of a Backend for Frontend application from PHP to its own NestJS micro-service.
