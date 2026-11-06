@@ -16,4 +16,4 @@ endDate:
 - Develop and utilize Docker containers to build and deploy applications to Kubernetes.
 - Effectively collaborate in a remote environment with co-workers across the world.
 - Participate in the on-call schedule responsible for monitoring applications and providing production
-  hot Rixes.
+  hot fixes.

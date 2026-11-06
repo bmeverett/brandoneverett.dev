@@ -1,5 +1,5 @@
 ---
-company: 'Chick-Fil-A'
+company: 'Chick-fil-A'
 location: 'Atlanta, GA'
 position: 
     - 'Lead Cloud Platform Engineer'
